@@ -1,0 +1,45 @@
+doctype html
+html
+  head
+    title Order / Checkout
+  body
+    if mode === 'checkout'
+      h1 Checkout
+
+      form(action="/checkout/confirm" method="POST")
+        input(type="hidden" name="cartData" value=cartData)
+
+        ul
+          each item, i in cart
+            li
+              | #{item.name} - $#{item.price} (x#{item.quantity})
+              br
+              label(for=`discountCode-${i}`) Discount Code:
+              // 👇 hidden + text pair ensures every product sends a value
+              input(type="hidden" name="discountCodes[]" value="")
+              input(
+                type="text"
+                name="discountCodes[]"
+                id=`discountCode-${i}`
+                placeholder="Enter discount code"
+              )
+
+        br
+        button(type="submit") Confirm Order
+
+    else if mode === 'confirm'
+      h1 Order Confirmation
+
+      ul
+        each item in cart
+          li
+            | #{item.name} - $#{item.price} (x#{item.quantity})
+            | | Code: #{item.enteredCode || 'None'}
+            | | Discount Applied: #{item.discountApplied}
+            | | Final: $#{item.finalPrice}
+
+      p Original Total: $#{originalTotal}
+      p Final Total: $#{finalTotal}
+
+      br
+      a(href="/products") Back to Products

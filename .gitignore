@@ -1,0 +1,22 @@
+# Large dependencies directories
+**/node_modules/
+Frontend/node_modules/
+Backend/node_modules/
+
+# Credentials and sensitive settings
+config.env
+**/config.env
+.env
+**/.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Frontend builds
+Frontend/dist/
+dist/
+
+# OS files
+.DS_Store
+Thumbs.db

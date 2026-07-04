@@ -1,0 +1,24 @@
+doctype html
+html
+  head
+    title Products & Cart
+  body
+    h1 Product List
+
+    ul
+      each product in products
+        li
+          | #{product.name} - $#{product.price}
+          button(type="button" class="add-to-cart" data-id=product._id data-name=product.name data-price=product.price) Add to Cart
+
+    hr
+
+    h2 Shopping Cart
+
+    ul#cartItems
+
+    form(action="/checkout" method="POST")
+      input(type="hidden" name="cartData" id="cartData")
+      button(type="submit") Go to Checkout
+
+    script(src="/js/cart.js")
