@@ -47,6 +47,7 @@ function App() {
   // --- RESPONSIVE STATE ---
   const [activeSection, setActiveSection] = useState('science');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeDetailsTab, setActiveDetailsTab] = useState(null);
 
   // --- ADMIN WORKSPACE STATE ---
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -986,7 +987,7 @@ function App() {
               Protect. Hydrate.<br/>Glow Naturally.
             </h1>
             <p className="text-lg md:text-xl text-[#524345] mb-10 max-w-lg leading-relaxed">
-              Broad Spectrum SPF 50 sunscreen mist enriched with Aloe Vera, Chamomile, and Vitamins B5 & E for weightless, radiant daily protection.
+              Broad Spectrum SPF 50 sunscreen mist enriched with Aloe Vera, Chamomile, and Vitamins B5 & B3 for weightless, radiant daily protection.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-16">
               <button 
@@ -1014,8 +1015,8 @@ function App() {
                 <span className="text-xs font-semibold text-[#524345] tracking-wider">DERMATOLOGICALLY TESTED</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="material-symbols-outlined text-[#7c5730] fill-current">spa</span>
-                <span className="text-xs font-semibold text-[#524345] tracking-wider">NON-GREASY FORMULA</span>
+                <span className="material-symbols-outlined text-[#7c5730] fill-current">flag</span>
+                <span className="text-xs font-semibold text-[#524345] tracking-wider">MADE IN ALGERIA</span>
               </div>
             </div>
           </div>
@@ -1183,12 +1184,12 @@ function App() {
             <div className="glass p-8 rounded-2xl flex flex-col items-center text-center hover:bg-white/90 transition-all duration-300">
               <div className="mb-6 w-24 h-24 rounded-full bg-white shadow-inner flex items-center justify-center p-2 overflow-hidden border border-gray-100">
                 <div className="w-full h-full rounded-full flex items-center justify-center bg-[#ffd9df]/20 border border-[#ffd9df]/40">
-                  <span className="font-serif text-2xl font-bold text-[#8c4a5a]">E</span>
+                  <span className="font-serif text-2xl font-bold text-[#8c4a5a]">B3</span>
                 </div>
               </div>
-              <span className="text-[10px] font-bold text-[#7c5730] mb-2 tracking-widest">VITAMIN E</span>
-              <h3 className="font-serif text-lg text-[#150004] mb-3 font-semibold">Defense Shield</h3>
-              <p className="text-xs text-[#524345] leading-relaxed">Provides powerful antioxidant layers to actively combat oxidation free-radicals.</p>
+              <span className="text-[10px] font-bold text-[#7c5730] mb-2 tracking-widest">VITAMIN B3</span>
+              <h3 className="font-serif text-lg text-[#150004] mb-3 font-semibold">Skin Brightener</h3>
+              <p className="text-xs text-[#524345] leading-relaxed">Infused with Niacinamide to improve skin texture, minimize pores, and boost radiance.</p>
             </div>
           </div>
         </div>
@@ -1231,7 +1232,13 @@ function App() {
               <div className="absolute top-1/2 -left-8 animate-pulse" style={{ animationDuration: '4s' }}>
                 <div className="glass px-4 py-3 rounded-full flex flex-col items-center justify-center shadow-md border border-[#ffd9df]">
                   <span className="text-[9px] font-bold text-[#8c4a5a] uppercase">VITAMINS</span>
-                  <span className="font-bold text-xs text-[#150004]">B5 & E</span>
+                  <span className="font-bold text-xs text-[#150004]">B5 & B3</span>
+                </div>
+              </div>
+              <div className="absolute -bottom-6 -left-6">
+                <div className="glass px-4 py-2.5 rounded-full flex items-center gap-2 shadow-md border border-gray-150 bg-white/80">
+                  <span className="material-symbols-outlined text-[14px] text-[#7c5730]">scale</span>
+                  <span className="text-[10px] font-bold text-[#150004]">50 ML / 1.7 FL OZ</span>
                 </div>
               </div>
             </div>
@@ -1280,6 +1287,51 @@ function App() {
                 >
                   BUY NOW
                 </button>
+              </div>
+
+              {/* Collapsible Product Details Accordions */}
+              <div className="mt-10 space-y-3 w-full border-t border-[#7c5730]/10 pt-8">
+                {/* How to use */}
+                <div className="border border-gray-150 rounded-2xl overflow-hidden bg-white/40">
+                  <button
+                    type="button"
+                    onClick={() => setActiveDetailsTab(activeDetailsTab === 'usage' ? null : 'usage')}
+                    className="w-full px-6 py-4 flex justify-between items-center text-left text-xs font-bold text-[#150004] tracking-widest uppercase focus:outline-none"
+                  >
+                    <span>CONSEILS D'UTILISATION</span>
+                    <span className="material-symbols-outlined text-[#7c5730]">
+                      {activeDetailsTab === 'usage' ? 'expand_less' : 'expand_more'}
+                    </span>
+                  </button>
+                  {activeDetailsTab === 'usage' && (
+                    <div className="px-6 pb-6 text-xs text-[#524345] space-y-2 border-t border-gray-100/50 pt-4 leading-relaxed animate-fadeIn">
+                      <p>• <strong>Agiter</strong> énergiquement avant emploi.</p>
+                      <p>• <strong>Vaporiser</strong> à une distance d'environ 15 à 20 cm uniformément sur le visage et/ou le corps avant toute exposition au soleil.</p>
+                      <p>• <strong>Tapoter</strong> légèrement du bout des doigts pour enlever l'excédent si nécessaire.</p>
+                      <p>• <strong>Renouveler</strong> l'application toutes les 2 heures pour une protection continue.</p>
+                      <p className="text-[10px] text-gray-400 mt-3">Usage externe uniquement. Éviter tout contact avec les yeux. Tenir hors de portée des enfants.</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Full Ingredients list */}
+                <div className="border border-gray-150 rounded-2xl overflow-hidden bg-white/40">
+                  <button
+                    type="button"
+                    onClick={() => setActiveDetailsTab(activeDetailsTab === 'ingredients' ? null : 'ingredients')}
+                    className="w-full px-6 py-4 flex justify-between items-center text-left text-xs font-bold text-[#150004] tracking-widest uppercase focus:outline-none"
+                  >
+                    <span>LISTE DES INGRÉDIENTS</span>
+                    <span className="material-symbols-outlined text-[#7c5730]">
+                      {activeDetailsTab === 'ingredients' ? 'expand_less' : 'expand_more'}
+                    </span>
+                  </button>
+                  {activeDetailsTab === 'ingredients' && (
+                    <div className="px-6 pb-6 text-xs text-[#524345] leading-relaxed border-t border-gray-100/50 pt-4 font-mono text-[10px] animate-fadeIn">
+                      Aqua, Glycerin, Propylene Glycol, Coco-Caprylate/Caprate, Diethylamino Hydroxybenzoyl Hexyl Benzoate, Ethylhexyl Triazone, Methylene Bis-Benzotriazolyl Tetramethylbutylphenol, Polysorbate 20, PEG-40 Hydrogenated Castor Oil, Aloe Barbadensis Leaf Extract, Chamomilla Recutita Flower Extract, Boswellia Serrata Resin Water, Xanthan Gum, Panthenol, Tocopherol, Tinogard TT, Methylisothiazolinone, Triethanolamine.
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
