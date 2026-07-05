@@ -418,7 +418,7 @@ function App() {
       return (
         <div className="min-h-screen bg-[#fcf9f8] flex items-center justify-center px-4 font-sans antialiased">
           <div className="max-w-md w-full bg-white rounded-3xl shadow-soft border border-white/50 p-10 text-center">
-            <span className="font-serif text-3xl font-bold text-[#150004] block mb-2 cursor-pointer" onClick={() => navigateTo('/')}>Claré</span>
+            <img src="/Logo.png" alt="Claré Logo" className="h-10 mx-auto mb-2 cursor-pointer object-contain" onClick={() => navigateTo('/')} />
             <span className="text-xs font-bold text-[#7c5730] tracking-widest block mb-8 uppercase">ADMIN WORKSPACE</span>
             
             <form onSubmit={handleAdminLogin} className="space-y-6 text-left">
@@ -473,7 +473,7 @@ function App() {
         {/* SIDEBAR PANEL */}
         <aside className="w-64 bg-[#150004] text-white shrink-0 flex flex-col p-6 shadow-xl">
           <div className="border-b border-white/5 pb-6 mb-8">
-            <span className="font-serif text-3xl font-bold text-[#ffd9df] block mb-1">Claré</span>
+            <img src="/Logo.png" alt="Claré Logo" className="h-10 object-contain brightness-0 invert mb-1" />
             <span className="text-[10px] font-bold text-[#ffd9df]/55 tracking-widest block uppercase">DASHBOARD WORKSPACE</span>
           </div>
 
@@ -861,7 +861,7 @@ function App() {
       {/* ─── NAVBAR ─── */}
       <nav className="fixed top-0 w-full z-40 bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-sm">
         <div className="max-w-[1280px] mx-auto px-6 py-4 flex justify-between items-center">
-          <span className="font-serif text-3xl font-semibold text-[#150004] tracking-tight cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>Claré</span>
+          <img src="/Logo.png" alt="Claré Logo" className="h-10 w-auto cursor-pointer object-contain" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} />
           <div className="hidden md:flex items-center gap-8">
             <a 
               className={`pb-1 transition-all text-xs uppercase tracking-widest ${activeSection === 'science' ? 'text-[#150004] font-bold border-b-2 border-[#150004]' : 'text-[#524345] hover:text-[#150004]'}`} 
@@ -1369,7 +1369,10 @@ function App() {
       <footer className="bg-[#150004] text-white py-20 border-t border-white/5">
         <div className="max-w-[1280px] mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="col-span-1 md:col-span-2">
-            <span className="font-serif text-2xl text-[#ffd9df] mb-6 block font-semibold">Claré Laboratoires</span>
+            <div className="flex items-center gap-3 mb-6">
+              <img src="/Logo.png" alt="Claré Logo" className="h-8 w-auto object-contain brightness-0 invert" />
+              <span className="font-serif text-xl text-[#ffd9df] font-semibold">Laboratoires</span>
+            </div>
             <p className="text-white/60 text-sm max-w-sm mb-10 leading-relaxed">Pioneering the intersection of clean clinical research and premium botanical hydration. Paris, France.</p>
             <div className="flex gap-4">
               <a className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors" href="#">
