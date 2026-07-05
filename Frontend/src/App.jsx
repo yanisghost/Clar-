@@ -58,6 +58,7 @@ function App() {
 
   // --- INTERNATIONALIZATION (i18n) STATE ---
   const [language, setLanguage] = useState(localStorage.getItem('lang') || 'en');
+  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
 
   const t = (key) => {
     return TRANSLATIONS[language]?.[key] || TRANSLATIONS['en']?.[key] || key;
@@ -907,17 +908,61 @@ function App() {
             </a>
           </div>
           <div className="flex items-center gap-4">
-            {/* Language Selector Dropdown */}
-            <div className="relative">
-              <select
-                value={language}
-                onChange={(e) => setLanguage(e.target.value)}
-                className="bg-transparent border border-[#7c5730]/10 hover:border-[#7c5730]/30 text-[#150004] text-[10px] font-bold tracking-widest uppercase py-1.5 px-3.5 rounded-full focus:outline-none cursor-pointer appearance-none text-center bg-white/50"
+            {/* Custom Premium Language Dropdown Switcher */}
+            <div className="relative font-sans">
+              <button
+                onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+                className="flex items-center gap-2 border border-[#7c5730]/15 hover:border-[#7c5730]/35 text-[#150004] text-[10px] font-bold tracking-widest uppercase py-2 px-4 rounded-full focus:outline-none transition-all duration-300 bg-white/70 shadow-sm hover:shadow"
               >
-                <option value="en">EN</option>
-                <option value="fr">FR</option>
-                <option value="ar">AR</option>
-              </select>
+                <span className="material-symbols-outlined text-sm text-[#7c5730]">language</span>
+                <span>{language}</span>
+                <span className="material-symbols-outlined text-[12px] text-[#7c5730] transition-transform duration-300">
+                  {isLangDropdownOpen ? 'expand_less' : 'expand_more'}
+                </span>
+              </button>
+
+              {isLangDropdownOpen && (
+                <>
+                  {/* Close dropdown on click outside */}
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setIsLangDropdownOpen(false)} 
+                  />
+                  {/* Floating luxury glass dropdown panel */}
+                  <div className="absolute ltr:right-0 rtl:left-0 mt-2 w-32 bg-white/95 backdrop-blur-xl border border-gray-150 rounded-2xl shadow-xl z-50 py-1.5 animate-fadeIn text-left">
+                    <button
+                      onClick={() => {
+                        setLanguage('en');
+                        setIsLangDropdownOpen(false);
+                      }}
+                      className={`w-full px-4 py-2.5 text-xs font-semibold hover:bg-[#7c5730]/5 text-gray-700 transition-colors flex items-center justify-between ${language === 'en' ? 'text-[#7c5730] bg-[#7c5730]/5 font-bold' : ''}`}
+                    >
+                      <span>English</span>
+                      {language === 'en' && <span className="material-symbols-outlined text-xs">check</span>}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setLanguage('fr');
+                        setIsLangDropdownOpen(false);
+                      }}
+                      className={`w-full px-4 py-2.5 text-xs font-semibold hover:bg-[#7c5730]/5 text-gray-700 transition-colors flex items-center justify-between ${language === 'fr' ? 'text-[#7c5730] bg-[#7c5730]/5 font-bold' : ''}`}
+                    >
+                      <span>Français</span>
+                      {language === 'fr' && <span className="material-symbols-outlined text-xs">check</span>}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setLanguage('ar');
+                        setIsLangDropdownOpen(false);
+                      }}
+                      className={`w-full px-4 py-2.5 text-xs font-semibold hover:bg-[#7c5730]/5 text-gray-700 transition-colors flex items-center justify-between ${language === 'ar' ? 'text-[#7c5730] bg-[#7c5730]/5 font-bold' : ''}`}
+                    >
+                      <span>العربية</span>
+                      {language === 'ar' && <span className="material-symbols-outlined text-xs">check</span>}
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
 
             <button 
