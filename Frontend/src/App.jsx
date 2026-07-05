@@ -1098,7 +1098,7 @@ function App() {
               <img 
                 className="relative rounded-2xl w-full h-[320px] sm:h-[450px] lg:h-[600px] object-cover shadow-xl" 
                 alt="Claré SPF Mist application visual close up" 
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeISu62jwRHGz4VfcvEH6rlN5LYE2-REblrQx1CjCGY8wPhVC1K38pzWi48kB2-ydA7Dc-KUBOLOb--sA66ElBPl1F6-1f59VslmD94DIeTWKKEK7FZ2GIdUYHG7gO8ikwhmisHi8F1420gm1m_jHWF51hvhAN812_Ep31jyCyQM3LByBgRbkFKIrJsOg8_ZkS3mOEtCTGc_5ldDAYGfGbluPbCcpWer4-zsr-a0HsyTsQalhHftXWpw"
+                src="/woman_with_clare.png"
               />
             </div>
             
