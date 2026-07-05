@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { WILAYAS } from './utils/wilayas';
 import communesData from './utils/communes.json';
+import { TRANSLATIONS } from './utils/translations';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
 
@@ -48,6 +49,22 @@ function App() {
   const [activeSection, setActiveSection] = useState('science');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDetailsTab, setActiveDetailsTab] = useState(null);
+
+  // --- INTERNATIONALIZATION (i18n) STATE ---
+  const [language, setLanguage] = useState(localStorage.getItem('lang') || 'en');
+
+  const t = (key) => {
+    return TRANSLATIONS[language]?.[key] || TRANSLATIONS['en']?.[key] || key;
+  };
+
+  useEffect(() => {
+    if (currentPath === '/admin') {
+      document.body.dir = 'ltr';
+      return;
+    }
+    document.body.dir = language === 'ar' ? 'rtl' : 'ltr';
+    localStorage.setItem('lang', language);
+  }, [language, currentPath]);
 
   // --- ADMIN WORKSPACE STATE ---
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -868,28 +885,41 @@ function App() {
               className={`pb-1 transition-all text-xs uppercase tracking-widest ${activeSection === 'science' ? 'text-[#150004] font-bold border-b-2 border-[#150004]' : 'text-[#524345] hover:text-[#150004]'}`} 
               href="#science"
             >
-              Science
+              {t('nav_science')}
             </a>
             <a 
               className={`pb-1 transition-all text-xs uppercase tracking-widest ${activeSection === 'collection' ? 'text-[#150004] font-bold border-b-2 border-[#150004]' : 'text-[#524345] hover:text-[#150004]'}`} 
               href="#collection"
             >
-              Collection
+              {t('nav_collection')}
             </a>
             <a 
               className={`pb-1 transition-all text-xs uppercase tracking-widest ${activeSection === 'ingredients' ? 'text-[#150004] font-bold border-b-2 border-[#150004]' : 'text-[#524345] hover:text-[#150004]'}`} 
               href="#ingredients"
             >
-              Ingredients
+              {t('nav_ingredients')}
             </a>
             <a 
               className={`pb-1 transition-all text-xs uppercase tracking-widest ${activeSection === 'faq' ? 'text-[#150004] font-bold border-b-2 border-[#150004]' : 'text-[#524345] hover:text-[#150004]'}`} 
               href="#faq"
             >
-              FAQ
+              {t('nav_faq')}
             </a>
           </div>
           <div className="flex items-center gap-4">
+            {/* Language Selector Dropdown */}
+            <div className="relative">
+              <select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                className="bg-transparent border border-[#7c5730]/10 hover:border-[#7c5730]/30 text-[#150004] text-[10px] font-bold tracking-widest uppercase py-1.5 px-3.5 rounded-full focus:outline-none cursor-pointer appearance-none text-center bg-white/50"
+              >
+                <option value="en">EN</option>
+                <option value="fr">FR</option>
+                <option value="ar">AR</option>
+              </select>
+            </div>
+
             <button 
               onClick={() => setIsCartOpen(true)}
               className="relative p-2 text-[#150004] hover:opacity-80 transition-opacity"
@@ -908,7 +938,7 @@ function App() {
               }}
               className="bg-[#3e0b1b] text-white px-6 py-2.5 rounded-full text-xs font-semibold tracking-widest hover:bg-[#150004] transition-all hidden sm:block"
             >
-              SHOP NOW
+              {t('nav_shop')}
             </button>
             {/* Hamburger menu button for mobile screens */}
             <button 
@@ -931,28 +961,28 @@ function App() {
             className={`text-xs uppercase tracking-widest font-semibold py-2 border-b border-gray-50 ${activeSection === 'science' ? 'text-[#7c5730] font-bold' : 'text-[#524345]'}`} 
             href="#science"
           >
-            Science
+            {t('nav_science')}
           </a>
           <a 
             onClick={() => setIsMobileMenuOpen(false)}
             className={`text-xs uppercase tracking-widest font-semibold py-2 border-b border-gray-50 ${activeSection === 'collection' ? 'text-[#7c5730] font-bold' : 'text-[#524345]'}`} 
             href="#collection"
           >
-            Collection
+            {t('nav_collection')}
           </a>
           <a 
             onClick={() => setIsMobileMenuOpen(false)}
             className={`text-xs uppercase tracking-widest font-semibold py-2 border-b border-gray-50 ${activeSection === 'ingredients' ? 'text-[#7c5730] font-bold' : 'text-[#524345]'}`} 
             href="#ingredients"
           >
-            Ingredients
+            {t('nav_ingredients')}
           </a>
           <a 
             onClick={() => setIsMobileMenuOpen(false)}
             className={`text-xs uppercase tracking-widest font-semibold py-2 ${activeSection === 'faq' ? 'text-[#7c5730] font-bold' : 'text-[#524345]'}`} 
             href="#faq"
           >
-            FAQ
+            {t('nav_faq')}
           </a>
           <button 
             onClick={() => {
@@ -962,7 +992,7 @@ function App() {
             }}
             className="w-full bg-[#3e0b1b] text-white py-3.5 rounded-full text-xs font-semibold tracking-widest hover:bg-[#150004] transition-all text-center"
           >
-            SHOP NOW
+            {t('nav_shop')}
           </button>
         </div>
       )}
@@ -979,44 +1009,44 @@ function App() {
         </div>
         
         <div className="relative z-10 max-w-[1280px] mx-auto px-6 w-full py-12">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl ltr:text-left rtl:text-right">
             <span className="inline-block px-4 py-1.5 rounded-full bg-[#fdcb9b] text-[#79542d] text-xs font-semibold tracking-wider mb-6 uppercase">
-              NEW RELEASE
+              {t('hero_badge')}
             </span>
             <h1 className="font-serif text-5xl md:text-7xl text-[#150004] leading-tight mb-6">
-              Protect. Hydrate.<br/>Glow Naturally.
+              {t('hero_title_1')}<br/>{t('hero_title_2')}
             </h1>
             <p className="text-lg md:text-xl text-[#524345] mb-10 max-w-lg leading-relaxed">
-              Broad Spectrum SPF 50 sunscreen mist enriched with Aloe Vera, Chamomile, and Vitamins B5 & B3 for weightless, radiant daily protection.
+              {t('hero_desc')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-16">
               <button 
                 onClick={addToCart}
                 className="bg-[#150004] text-white px-10 py-5 rounded-full text-xs font-semibold tracking-widest hover:bg-[#3e0b1b] transition-all flex items-center justify-center gap-2 group"
               >
-                ADD TO CART 
-                <span className="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span>
+                {t('hero_btn_cart')} 
+                <span className="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1 rtl:rotate-180">arrow_forward</span>
               </button>
               <a 
                 href="#science"
                 className="border border-[#7c5730] text-[#7c5730] px-10 py-5 rounded-full text-xs font-semibold tracking-widest text-center hover:bg-[#7c5730]/5 transition-all"
               >
-                LEARN MORE
+                {t('hero_btn_learn')}
               </a>
             </div>
             
             <div className="flex flex-wrap gap-8 items-center border-t border-[#7c5730]/10 pt-10">
               <div className="flex items-center gap-3">
                 <span className="material-symbols-outlined text-[#7c5730] fill-current">verified</span>
-                <span className="text-xs font-semibold text-[#524345] tracking-wider">SPF 50 UVA/UVB</span>
+                <span className="text-xs font-semibold text-[#524345] tracking-wider">{t('hero_badge_spf')}</span>
               </div>
               <div className="flex items-center gap-3">
                 <span className="material-symbols-outlined text-[#7c5730] fill-current">science</span>
-                <span className="text-xs font-semibold text-[#524345] tracking-wider">DERMATOLOGICALLY TESTED</span>
+                <span className="text-xs font-semibold text-[#524345] tracking-wider">{t('hero_badge_test')}</span>
               </div>
               <div className="flex items-center gap-3">
                 <span className="material-symbols-outlined text-[#7c5730] fill-current">flag</span>
-                <span className="text-xs font-semibold text-[#524345] tracking-wider">MADE IN ALGERIA</span>
+                <span className="text-xs font-semibold text-[#524345] tracking-wider">{t('hero_badge_made')}</span>
               </div>
             </div>
           </div>
@@ -1030,20 +1060,22 @@ function App() {
             <div className="w-12 h-12 rounded-full bg-[#7c5730]/10 flex items-center justify-center text-[#7c5730] shrink-0">
               <span className="material-symbols-outlined text-3xl">done_all</span>
             </div>
-            <div className="grow">
-              <h3 className="font-serif text-2xl text-[#150004] mb-2">Thank you! Your order was placed.</h3>
+            <div className="grow ltr:text-left rtl:text-right">
+              <h3 className="font-serif text-2xl text-[#150004] mb-2">
+                {language === 'ar' ? 'شكراً لك! تم تسجيل طلبك.' : (language === 'fr' ? 'Merci ! Votre commande a été enregistrée.' : 'Thank you! Your order was placed.')}
+              </h3>
               <p className="text-sm text-[#524345]">
-                Order ID: <span className="font-mono font-bold">{orderSuccess._id}</span> • Customer: <span className="font-semibold">{orderSuccess.customerName}</span>
+                {language === 'ar' ? 'رقم الطلب:' : (language === 'fr' ? 'ID Commande :' : 'Order ID:')} <span className="font-mono font-bold">{orderSuccess._id}</span> • {language === 'ar' ? 'الزبون:' : (language === 'fr' ? 'Client :' : 'Customer:')} <span className="font-semibold">{orderSuccess.customerName}</span>
               </p>
               <p className="text-xs text-[#524345]/80 mt-1">
-                Status: <span className="text-[#7c5730] font-semibold">{orderSuccess.status}</span>. You can track this order or wait for verification.
+                {language === 'ar' ? 'الحالة:' : (language === 'fr' ? 'Statut :' : 'Status:')} <span className="text-[#7c5730] font-semibold">{orderSuccess.status}</span>. {language === 'ar' ? 'يمكنك تتبع هذا الطلب أو انتظار مكالمة التأكيد.' : (language === 'fr' ? 'Vous pouvez suivre cette commande ou attendre la confirmation.' : 'You can track this order or wait for verification.')}
               </p>
             </div>
             <button 
               onClick={() => setOrderSuccess(null)}
               className="text-xs font-semibold text-[#7c5730] underline hover:text-[#150004]"
             >
-              DISMISS
+              {t('form_success_close')}
             </button>
           </div>
         </div>
@@ -1053,38 +1085,38 @@ function App() {
       <section id="science" className="py-24 bg-[#fcf9f8]">
         <div className="max-w-[1280px] mx-auto px-6">
           <div className="text-center mb-16">
-            <span className="text-xs font-bold text-[#7c5730] uppercase tracking-[0.2em] mb-4 block">EXCELLENCE ENCAPSULATED</span>
-            <h2 className="font-serif text-4xl text-[#150004]">Advanced Skin Defense</h2>
+            <span className="text-xs font-bold text-[#7c5730] uppercase tracking-[0.2em] mb-4 block">{t('sci_badge')}</span>
+            <h2 className="font-serif text-4xl text-[#150004]">{t('sci_title')}</h2>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="p-8 rounded-2xl bg-[#f6f3f2] hover:bg-[#f0eded] transition-colors duration-300 shadow-sm border border-white/50">
+            <div className="p-8 rounded-2xl bg-[#f6f3f2] hover:bg-[#f0eded] transition-colors duration-300 shadow-sm border border-white/50 ltr:text-left rtl:text-right">
               <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-6 shadow-sm">
                 <span className="material-symbols-outlined text-[#7c5730]">wb_sunny</span>
               </div>
-              <h3 className="font-serif text-xl text-[#150004] mb-3">SPF 50 Protection</h3>
-              <p className="text-[#524345] text-sm leading-relaxed">Highest grade UVA/UVB broad-spectrum defense against photo-aging and skin degradation.</p>
+              <h3 className="font-serif text-xl text-[#150004] mb-3">{t('feat_spf_title')}</h3>
+              <p className="text-[#524345] text-sm leading-relaxed">{t('feat_spf_desc')}</p>
             </div>
-            <div className="p-8 rounded-2xl bg-[#f6f3f2] hover:bg-[#f0eded] transition-colors duration-300 shadow-sm border border-white/50">
+            <div className="p-8 rounded-2xl bg-[#f6f3f2] hover:bg-[#f0eded] transition-colors duration-300 shadow-sm border border-white/50 ltr:text-left rtl:text-right">
               <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-6 shadow-sm">
                 <span className="material-symbols-outlined text-[#7c5730]">eco</span>
               </div>
-              <h3 className="font-serif text-xl text-[#150004] mb-3">Aloe & Chamomile</h3>
-              <p className="text-[#524345] text-sm leading-relaxed">Soothing botanical extracts that calm inflammation and reduce sun-induced redness instantly.</p>
+              <h3 className="font-serif text-xl text-[#150004] mb-3">{t('feat_bot_title')}</h3>
+              <p className="text-[#524345] text-sm leading-relaxed">{t('feat_bot_desc')}</p>
             </div>
-            <div className="p-8 rounded-2xl bg-[#f6f3f2] hover:bg-[#f0eded] transition-colors duration-300 shadow-sm border border-white/50">
+            <div className="p-8 rounded-2xl bg-[#f6f3f2] hover:bg-[#f0eded] transition-colors duration-300 shadow-sm border border-white/50 ltr:text-left rtl:text-right">
               <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-6 shadow-sm">
-                <span className="material-symbols-outlined text-[#7c5730]">water_drop</span>
+                <span className="material-symbols-outlined text-[#7c5730]">healing</span>
               </div>
-              <h3 className="font-serif text-xl text-[#150004] mb-3">Light Hydration</h3>
-              <p className="text-[#524345] text-sm leading-relaxed">A weightless, refreshing fine mist that absorbs instantly with no white cast or greasy film.</p>
+              <h3 className="font-serif text-xl text-[#150004] mb-3">{t('feat_vit_title')}</h3>
+              <p className="text-[#524345] text-sm leading-relaxed">{t('feat_vit_desc')}</p>
             </div>
-            <div className="p-8 rounded-2xl bg-[#f6f3f2] hover:bg-[#f0eded] transition-colors duration-300 shadow-sm border border-white/50">
+            <div className="p-8 rounded-2xl bg-[#f6f3f2] hover:bg-[#f0eded] transition-colors duration-300 shadow-sm border border-white/50 ltr:text-left rtl:text-right">
               <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-6 shadow-sm">
                 <span className="material-symbols-outlined text-[#7c5730]">clinical_notes</span>
               </div>
-              <h3 className="font-serif text-xl text-[#150004] mb-3">Clinical Sourcing</h3>
-              <p className="text-[#524345] text-sm leading-relaxed">Validated through rigorous laboratory testing for all skin types, including highly sensitive skin.</p>
+              <h3 className="font-serif text-xl text-[#150004] mb-3">{t('feat_cli_title')}</h3>
+              <p className="text-[#524345] text-sm leading-relaxed">{t('feat_cli_desc')}</p>
             </div>
           </div>
         </div>
@@ -1103,30 +1135,30 @@ function App() {
               />
             </div>
             
-            <div className="w-full lg:w-1/2">
-              <span className="text-xs font-bold text-[#7c5730] uppercase mb-4 block tracking-wider">OUR PHILOSOPHY</span>
-              <h2 className="font-serif text-4xl md:text-5xl text-[#150004] mb-8">Why Experts Choose Claré</h2>
+            <div className="w-full lg:w-1/2 ltr:text-left rtl:text-right">
+              <span className="text-xs font-bold text-[#7c5730] uppercase mb-4 block tracking-wider">{t('col_badge')}</span>
+              <h2 className="font-serif text-4xl md:text-5xl text-[#150004] mb-8">{t('col_title')}</h2>
               
               <ul className="space-y-8">
                 <li className="flex items-start gap-4">
                   <span className="material-symbols-outlined text-[#7c5730] mt-1">check_circle</span>
                   <div>
-                    <span className="text-lg font-semibold block text-[#150004]">Ultimate UV Shield</span>
-                    <p className="text-[#524345] text-sm mt-1 leading-relaxed">Protects against the full spectrum of UVA/UVB rays to actively prevent long-term sun spot formation.</p>
+                    <span className="text-lg font-semibold block text-[#150004]">{t('phi_uv_title')}</span>
+                    <p className="text-[#524345] text-sm mt-1 leading-relaxed">{t('phi_uv_desc')}</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-4">
                   <span className="material-symbols-outlined text-[#7c5730] mt-1">check_circle</span>
                   <div>
-                    <span className="text-lg font-semibold block text-[#150004]">Zero Residue Finish</span>
-                    <p className="text-[#524345] text-sm mt-1 leading-relaxed">Engineered for immediate absorption with absolutely no heavy residue or oily layer.</p>
+                    <span className="text-lg font-semibold block text-[#150004]">{t('phi_res_title')}</span>
+                    <p className="text-[#524345] text-sm mt-1 leading-relaxed">{t('phi_res_desc')}</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-4">
                   <span className="material-symbols-outlined text-[#7c5730] mt-1">check_circle</span>
                   <div>
-                    <span className="text-lg font-semibold block text-[#150004]">Makeup Ready</span>
-                    <p className="text-[#524345] text-sm mt-1 leading-relaxed">Works perfectly as a setting spray or a base primer, creating a hydrated canvas for cosmetics.</p>
+                    <span className="text-lg font-semibold block text-[#150004]">{t('phi_make_title')}</span>
+                    <p className="text-[#524345] text-sm mt-1 leading-relaxed">{t('phi_make_desc')}</p>
                   </div>
                 </li>
               </ul>
@@ -1139,8 +1171,8 @@ function App() {
       <section id="ingredients" className="py-24 bg-[#fcf9f8]">
         <div className="max-w-[1280px] mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="font-serif text-4xl text-[#150004] mb-4">Bio-Active Ingredients</h2>
-            <p className="text-[#524345] text-sm max-w-xl mx-auto">Sourced with pharmaceutical precision to deliver therapeutic skin health alongside protection.</p>
+            <h2 className="font-serif text-4xl text-[#150004] mb-4">{t('ing_title')}</h2>
+            <p className="text-[#524345] text-sm max-w-xl mx-auto">{t('ing_desc')}</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -1152,9 +1184,9 @@ function App() {
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmaGuz8sapoPo6-NOeT9z-w5nVmvmTjYRpt0CWktIxuvFcWTCT2yOQxVIzGk3mY4-lw5xigSkmlEFmbOhxaS7zBjFFs5di5GZC1-boFq4qypR540-2-wM8V8DLjv3RVRpkGMFeYv5zOAIqNMmHj0DGLzy72ljTITHz2tj_-7PzyMXcyHbXu5Xdt1zktiWj8zex4Qv_IfGN6cR965NTl7RhZltUEfL3zFk8AMtoz0nvQd6Il88q0AcryQ"
                 />
               </div>
-              <span className="text-[10px] font-bold text-[#7c5730] mb-2 tracking-widest">ALOE VERA</span>
-              <h3 className="font-serif text-lg text-[#150004] mb-3 font-semibold">Hydration Master</h3>
-              <p className="text-xs text-[#524345] leading-relaxed">Locks in crucial moisture levels and cools the outer skin barrier after UV exposure.</p>
+              <span className="text-[10px] font-bold text-[#7c5730] mb-2 tracking-widest">{t('ing_aloe_badge')}</span>
+              <h3 className="font-serif text-lg text-[#150004] mb-3 font-semibold">{t('ing_aloe_title')}</h3>
+              <p className="text-xs text-[#524345] leading-relaxed">{t('ing_aloe_desc')}</p>
             </div>
             
             <div className="glass p-8 rounded-2xl flex flex-col items-center text-center hover:bg-white/90 transition-all duration-300">
@@ -1165,9 +1197,9 @@ function App() {
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuDICX5fCbPxQzDPcf3UrJ9GPxkgxS4PonHmKzD6EPRfVLNWUACJC0ecCjLlA6gGjmKz24Wpk9Cjad15OaJcRuznF7bBRhAq0Bo758zAZN6as19OHRnhcPvxeT8B4IwdSSqTYjqtO0cQeBDQy2zi5objjEGN55nvKSljAP89B_X-w_bo0v_ksAErEnORDD2TZK3uc5dHkmv9w9qhGxOs5O_V1zjNy2n1QkieymFrB5RH3_zKAgWynUq31w"
                 />
               </div>
-              <span className="text-[10px] font-bold text-[#7c5730] mb-2 tracking-widest">CHAMOMILE</span>
-              <h3 className="font-serif text-lg text-[#150004] mb-3 font-semibold">Soothing Agent</h3>
-              <p className="text-xs text-[#524345] leading-relaxed">Rich in anti-inflammatory components that neutralize environmental stress.</p>
+              <span className="text-[10px] font-bold text-[#7c5730] mb-2 tracking-widest">{t('ing_cham_badge')}</span>
+              <h3 className="font-serif text-lg text-[#150004] mb-3 font-semibold">{t('ing_cham_title')}</h3>
+              <p className="text-xs text-[#524345] leading-relaxed">{t('ing_cham_desc')}</p>
             </div>
 
             <div className="glass p-8 rounded-2xl flex flex-col items-center text-center hover:bg-white/90 transition-all duration-300">
@@ -1176,9 +1208,9 @@ function App() {
                   <span className="font-serif text-2xl font-bold text-[#7c5730]">B5</span>
                 </div>
               </div>
-              <span className="text-[10px] font-bold text-[#7c5730] mb-2 tracking-widest">VITAMIN B5</span>
-              <h3 className="font-serif text-lg text-[#150004] mb-3 font-semibold">Skin Recovery</h3>
-              <p className="text-xs text-[#524345] leading-relaxed">Enhances natural cellular repair processes and improves overall skin elasticity.</p>
+              <span className="text-[10px] font-bold text-[#7c5730] mb-2 tracking-widest">{t('ing_b5_badge')}</span>
+              <h3 className="font-serif text-lg text-[#150004] mb-3 font-semibold">{t('ing_b5_title')}</h3>
+              <p className="text-xs text-[#524345] leading-relaxed">{t('ing_b5_desc')}</p>
             </div>
 
             <div className="glass p-8 rounded-2xl flex flex-col items-center text-center hover:bg-white/90 transition-all duration-300">
@@ -1187,9 +1219,9 @@ function App() {
                   <span className="font-serif text-2xl font-bold text-[#8c4a5a]">B3</span>
                 </div>
               </div>
-              <span className="text-[10px] font-bold text-[#7c5730] mb-2 tracking-widest">VITAMIN B3</span>
-              <h3 className="font-serif text-lg text-[#150004] mb-3 font-semibold">Skin Brightener</h3>
-              <p className="text-xs text-[#524345] leading-relaxed">Infused with Niacinamide to improve skin texture, minimize pores, and boost radiance.</p>
+              <span className="text-[10px] font-bold text-[#7c5730] mb-2 tracking-widest">{t('ing_b3_badge')}</span>
+              <h3 className="font-serif text-lg text-[#150004] mb-3 font-semibold">{t('ing_b3_title')}</h3>
+              <p className="text-xs text-[#524345] leading-relaxed">{t('ing_b3_desc')}</p>
             </div>
           </div>
         </div>
@@ -1199,8 +1231,8 @@ function App() {
       <section className="py-24 bg-[#f6f3f2] overflow-hidden">
         <div className="max-w-[1280px] mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="font-serif text-4xl text-[#150004] mb-4">Visible Protection</h2>
-            <p className="text-[#524345] text-sm">Witness the difference of pharmaceutical-grade SPF defense.</p>
+            <h2 className="font-serif text-4xl text-[#150004] mb-4">{t('vis_title')}</h2>
+            <p className="text-[#524345] text-sm">{t('vis_desc')}</p>
           </div>
           
           <div className="relative w-full max-w-4xl mx-auto aspect-[16/9] overflow-hidden rounded-3xl shadow-lg border border-white/40 select-none">
@@ -1210,8 +1242,8 @@ function App() {
               src="/skin_split.png"
               draggable="false"
             />
-            <div className="absolute bottom-6 left-6 glass px-4 py-2 rounded-xl text-[10px] font-bold text-[#1c1b1b] tracking-widest">PROTECTED BY CLARÉ (LEFT)</div>
-            <div className="absolute bottom-6 right-6 glass px-4 py-2 rounded-xl text-[10px] font-bold text-[#1c1b1b] tracking-widest">UNPROTECTED SKIN (RIGHT)</div>
+            <div className="absolute bottom-6 ltr:left-6 rtl:right-6 glass px-4 py-2 rounded-xl text-[10px] font-bold text-[#1c1b1b] tracking-widest">{t('vis_left')}</div>
+            <div className="absolute bottom-6 ltr:right-6 rtl:left-6 glass px-4 py-2 rounded-xl text-[10px] font-bold text-[#1c1b1b] tracking-widest">{t('vis_right')}</div>
           </div>
         </div>
       </section>
@@ -1243,13 +1275,13 @@ function App() {
               </div>
             </div>
             
-            <div className="grow text-left">
+            <div className="grow ltr:text-left rtl:text-right">
               <h2 className="font-serif text-3xl md:text-4xl text-[#150004] mb-4 font-semibold">{product.name}</h2>
               <p className="text-sm text-[#524345] mb-8 leading-relaxed">{product.description}</p>
               
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-8">
                 <div className="flex flex-col">
-                  <span className="text-xs text-[#7c5730] font-bold uppercase tracking-wider">LIMITED TIME PRICE</span>
+                  <span className="text-xs text-[#7c5730] font-bold uppercase tracking-wider">{t('pro_limited')}</span>
                   <div className="flex items-baseline gap-3 mt-1">
                     <span className="text-3xl font-bold text-[#150004]">{product.discountPrice} DZD</span>
                     {product.price > product.discountPrice && (
@@ -1266,7 +1298,7 @@ function App() {
                     <span className="material-symbols-outlined text-sm fill-current">star</span>
                     <span className="material-symbols-outlined text-sm fill-current">star</span>
                   </div>
-                  <span className="text-xs font-semibold text-[#1c1b1b]">4.9 (2,300+ reviews)</span>
+                  <span className="text-xs font-semibold text-[#1c1b1b]">{t('pro_reviews')}</span>
                 </div>
               </div>
               
@@ -1275,7 +1307,7 @@ function App() {
                   onClick={addToCart}
                   className="bg-[#150004] text-white px-12 py-5 rounded-full text-sm font-bold tracking-widest hover:bg-[#3e0b1b] transition-all flex items-center justify-center gap-3 shadow-md w-full sm:w-auto"
                 >
-                  ADD TO CART
+                  {t('pro_add')}
                   <span className="material-symbols-outlined text-sm">shopping_bag</span>
                 </button>
                 <button 
@@ -1285,7 +1317,7 @@ function App() {
                   }}
                   className="border border-[#150004] text-[#150004] px-12 py-5 rounded-full text-sm font-bold tracking-widest hover:bg-[#150004]/5 transition-all w-full sm:w-auto"
                 >
-                  BUY NOW
+                  {t('pro_buy')}
                 </button>
               </div>
 
@@ -1296,20 +1328,20 @@ function App() {
                   <button
                     type="button"
                     onClick={() => setActiveDetailsTab(activeDetailsTab === 'usage' ? null : 'usage')}
-                    className="w-full px-6 py-4 flex justify-between items-center text-left text-xs font-bold text-[#150004] tracking-widest uppercase focus:outline-none"
+                    className="w-full px-6 py-4 flex justify-between items-center ltr:text-left rtl:text-right text-xs font-bold text-[#150004] tracking-widest uppercase focus:outline-none"
                   >
-                    <span>CONSEILS D'UTILISATION</span>
+                    <span>{t('pro_usage')}</span>
                     <span className="material-symbols-outlined text-[#7c5730]">
                       {activeDetailsTab === 'usage' ? 'expand_less' : 'expand_more'}
                     </span>
                   </button>
                   {activeDetailsTab === 'usage' && (
-                    <div className="px-6 pb-6 text-xs text-[#524345] space-y-2 border-t border-gray-100/50 pt-4 leading-relaxed animate-fadeIn">
-                      <p>• <strong>Agiter</strong> énergiquement avant emploi.</p>
-                      <p>• <strong>Vaporiser</strong> à une distance d'environ 15 à 20 cm uniformément sur le visage et/ou le corps avant toute exposition au soleil.</p>
-                      <p>• <strong>Tapoter</strong> légèrement du bout des doigts pour enlever l'excédent si nécessaire.</p>
-                      <p>• <strong>Renouveler</strong> l'application toutes les 2 heures pour une protection continue.</p>
-                      <p className="text-[10px] text-gray-400 mt-3">Usage externe uniquement. Éviter tout contact avec les yeux. Tenir hors de portée des enfants.</p>
+                    <div className="px-6 pb-6 text-xs text-[#524345] space-y-2 border-t border-gray-100/50 pt-4 leading-relaxed animate-fadeIn ltr:text-left rtl:text-right">
+                      <p>{t('pro_usage_1')}</p>
+                      <p>{t('pro_usage_2')}</p>
+                      <p>{t('pro_usage_3')}</p>
+                      <p>{t('pro_usage_4')}</p>
+                      <p className="text-[10px] text-gray-400 mt-3">{t('pro_usage_warning')}</p>
                     </div>
                   )}
                 </div>
@@ -1319,15 +1351,15 @@ function App() {
                   <button
                     type="button"
                     onClick={() => setActiveDetailsTab(activeDetailsTab === 'ingredients' ? null : 'ingredients')}
-                    className="w-full px-6 py-4 flex justify-between items-center text-left text-xs font-bold text-[#150004] tracking-widest uppercase focus:outline-none"
+                    className="w-full px-6 py-4 flex justify-between items-center ltr:text-left rtl:text-right text-xs font-bold text-[#150004] tracking-widest uppercase focus:outline-none"
                   >
-                    <span>LISTE DES INGRÉDIENTS</span>
+                    <span>{t('pro_ingredients')}</span>
                     <span className="material-symbols-outlined text-[#7c5730]">
                       {activeDetailsTab === 'ingredients' ? 'expand_less' : 'expand_more'}
                     </span>
                   </button>
                   {activeDetailsTab === 'ingredients' && (
-                    <div className="px-6 pb-6 text-xs text-[#524345] leading-relaxed border-t border-gray-100/50 pt-4 font-mono text-[10px] animate-fadeIn">
+                    <div className="px-6 pb-6 text-xs text-[#524345] leading-relaxed border-t border-gray-100/50 pt-4 font-mono text-[10px] animate-fadeIn ltr:text-left rtl:text-right">
                       Aqua, Glycerin, Propylene Glycol, Coco-Caprylate/Caprate, Diethylamino Hydroxybenzoyl Hexyl Benzoate, Ethylhexyl Triazone, Methylene Bis-Benzotriazolyl Tetramethylbutylphenol, Polysorbate 20, PEG-40 Hydrogenated Castor Oil, Aloe Barbadensis Leaf Extract, Chamomilla Recutita Flower Extract, Boswellia Serrata Resin Water, Xanthan Gum, Panthenol, Tocopherol, Tinogard TT, Methylisothiazolinone, Triethanolamine.
                     </div>
                   )}
@@ -1341,50 +1373,50 @@ function App() {
       {/* ─── FAQ SECTION ─── */}
       <section id="faq" className="py-24 bg-white">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-serif text-4xl text-[#150004] mb-12 text-center">Frequently Asked Questions</h2>
+          <h2 className="font-serif text-4xl text-[#150004] mb-12 text-center">{t('faq_title')}</h2>
           <div className="space-y-4">
             
             <div className="border-b border-[#7c5730]/10">
               <button 
-                className="w-full py-6 flex justify-between items-center text-left focus:outline-none group" 
+                className="w-full py-6 flex justify-between items-center ltr:text-left rtl:text-right focus:outline-none group" 
                 onClick={() => toggleFAQ(0)}
               >
-                <span className="text-lg text-[#150004] font-medium">How often should I reapply the SPF mist?</span>
+                <span className="text-lg text-[#150004] font-medium">{t('faq_q1')}</span>
                 <span className={`material-symbols-outlined text-[#7c5730] transition-transform duration-300 ${isFAQOpen[0] ? 'rotate-45' : ''}`}>add</span>
               </button>
               <div className={`overflow-hidden transition-all duration-300 ${isFAQOpen[0] ? 'max-h-40' : 'max-h-0'}`}>
-                <p className="pb-6 text-[#524345] text-sm leading-relaxed">
-                  For continuous protection, we recommend reapplying every 2 hours, especially if you are outdoors, swimming, or sweating. The ultra-fine mist is lightweight enough to apply right over cosmetics without disturbing your makeup.
+                <p className="pb-6 text-[#524345] text-sm leading-relaxed ltr:text-left rtl:text-right">
+                  {t('faq_a1')}
                 </p>
               </div>
             </div>
 
             <div className="border-b border-[#7c5730]/10">
               <button 
-                className="w-full py-6 flex justify-between items-center text-left focus:outline-none group" 
+                className="w-full py-6 flex justify-between items-center ltr:text-left rtl:text-right focus:outline-none group" 
                 onClick={() => toggleFAQ(1)}
               >
-                <span className="text-lg text-[#150004] font-medium">Is it suitable for acne-prone skin?</span>
+                <span className="text-lg text-[#150004] font-medium">{t('faq_q2')}</span>
                 <span className={`material-symbols-outlined text-[#7c5730] transition-transform duration-300 ${isFAQOpen[1] ? 'rotate-45' : ''}`}>add</span>
               </button>
               <div className={`overflow-hidden transition-all duration-300 ${isFAQOpen[1] ? 'max-h-40' : 'max-h-0'}`}>
-                <p className="pb-6 text-[#524345] text-sm leading-relaxed">
-                  Yes, Claré SPF 50 is non-comedogenic, oil-free, and dermatologically tested. The organic extracts like Aloe and Chamomile help soothe reactive skin and reduce underlying redness.
+                <p className="pb-6 text-[#524345] text-sm leading-relaxed ltr:text-left rtl:text-right">
+                  {t('faq_a2')}
                 </p>
               </div>
             </div>
 
             <div className="border-b border-[#7c5730]/10">
               <button 
-                className="w-full py-6 flex justify-between items-center text-left focus:outline-none group" 
+                className="w-full py-6 flex justify-between items-center ltr:text-left rtl:text-right focus:outline-none group" 
                 onClick={() => toggleFAQ(2)}
               >
-                <span className="text-lg text-[#150004] font-medium">Does it leave a white cast on darker skin tones?</span>
+                <span className="text-lg text-[#150004] font-medium">{t('faq_q3')}</span>
                 <span className={`material-symbols-outlined text-[#7c5730] transition-transform duration-300 ${isFAQOpen[2] ? 'rotate-45' : ''}`}>add</span>
               </button>
               <div className={`overflow-hidden transition-all duration-300 ${isFAQOpen[2] ? 'max-h-40' : 'max-h-0'}`}>
-                <p className="pb-6 text-[#524345] text-sm leading-relaxed">
-                  Absolutely not. We have engineered the formula to be completely transparent upon contact with all skin tones, leaving only a natural, radiant glow and zero chalky residue.
+                <p className="pb-6 text-[#524345] text-sm leading-relaxed ltr:text-left rtl:text-right">
+                  {t('faq_a3')}
                 </p>
               </div>
             </div>
@@ -1401,8 +1433,8 @@ function App() {
               <div className="w-full h-full" style={{ backgroundImage: 'radial-gradient(#7c5730 1.5px, transparent 1.5px)', backgroundSize: '40px 40px' }}></div>
             </div>
             <div className="relative z-10">
-              <h2 className="font-serif text-4xl md:text-5xl text-[#150004] mb-6 font-semibold">Your Skin Deserves<br/>Premium Protection.</h2>
-              <p className="text-base md:text-lg text-[#61401b] mb-10 max-w-xl mx-auto leading-relaxed">Join thousands of skincare enthusiasts who have switched to the future of light, botanical sun protection.</p>
+              <h2 className="font-serif text-4xl md:text-5xl text-[#150004] mb-6 font-semibold">{t('cta_title_1')}<br/>{t('cta_title_2')}</h2>
+              <p className="text-base md:text-lg text-[#61401b] mb-10 max-w-xl mx-auto leading-relaxed">{t('cta_desc')}</p>
               <button 
                 onClick={() => {
                   if (cart.length === 0) addToCart();
@@ -1410,7 +1442,7 @@ function App() {
                 }}
                 className="bg-[#150004] text-white px-12 py-5 rounded-full text-xs font-semibold tracking-widest hover:bg-[#3e0b1b] transition-all shadow-md"
               >
-                BUY CLARÉ SPF 50
+                {t('cta_btn')}
               </button>
             </div>
           </div>
@@ -1420,12 +1452,12 @@ function App() {
       {/* ─── FOOTER ─── */}
       <footer className="bg-[#150004] text-white py-20 border-t border-white/5">
         <div className="max-w-[1280px] mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
-          <div className="col-span-1 md:col-span-2">
+          <div className="col-span-1 md:col-span-2 ltr:text-left rtl:text-right">
             <div className="flex items-center gap-3 mb-6">
               <img src="/Logo.png?v=2" alt="Claré Logo" className="h-12 w-auto object-contain brightness-0 invert" />
               <span className="font-serif text-xl text-[#ffd9df] font-semibold">Laboratoires</span>
             </div>
-            <p className="text-white/60 text-sm max-w-sm mb-10 leading-relaxed">Pioneering the intersection of clean clinical research and premium botanical hydration. Paris, France.</p>
+            <p className="text-white/60 text-sm max-w-sm mb-10 leading-relaxed">{t('foo_desc')}</p>
             <div className="flex gap-4">
               <a className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors" href="#">
                 <span className="material-symbols-outlined text-sm">language</span>
@@ -1435,35 +1467,35 @@ function App() {
               </a>
             </div>
           </div>
-          <div>
-            <h4 className="text-xs font-bold text-white mb-6 tracking-widest">EXPLORE</h4>
+          <div className="ltr:text-left rtl:text-right">
+            <h4 className="text-xs font-bold text-white mb-6 tracking-widest">{t('foo_explore')}</h4>
             <ul className="space-y-4 text-white/60 text-sm">
-              <li><a className="hover:text-[#ffd9df] transition-colors" href="#science">Science</a></li>
-              <li><a className="hover:text-[#ffd9df] transition-colors" href="#collection">Collection</a></li>
-              <li><a className="hover:text-[#ffd9df] transition-colors" href="#ingredients">Ingredients</a></li>
-              <li><a className="hover:text-[#ffd9df] transition-colors" href="#faq">FAQ</a></li>
+              <li><a className="hover:text-[#ffd9df] transition-colors" href="#science">{t('nav_science')}</a></li>
+              <li><a className="hover:text-[#ffd9df] transition-colors" href="#collection">{t('nav_collection')}</a></li>
+              <li><a className="hover:text-[#ffd9df] transition-colors" href="#ingredients">{t('nav_ingredients')}</a></li>
+              <li><a className="hover:text-[#ffd9df] transition-colors" href="#faq">{t('nav_faq')}</a></li>
             </ul>
           </div>
-          <div>
-            <h4 className="text-xs font-bold text-white mb-6 tracking-widest">NEWSLETTER</h4>
-            <p className="text-xs text-white/60 mb-6 leading-relaxed">Subscribe to receive exclusive clinical studies and seasonal offers.</p>
+          <div className="ltr:text-left rtl:text-right">
+            <h4 className="text-xs font-bold text-white mb-6 tracking-widest">{t('foo_newsletter')}</h4>
+            <p className="text-xs text-white/60 mb-6 leading-relaxed">{t('foo_news_desc')}</p>
             <div className="flex border-b border-white/10 pb-2">
               <input 
-                className="bg-transparent border-none outline-none text-xs w-full placeholder:text-white/30 focus:ring-0" 
-                placeholder="Email Address" 
+                className="bg-transparent border-none outline-none text-xs w-full placeholder:text-white/30 focus:ring-0 ltr:text-left rtl:text-right" 
+                placeholder={t('foo_placeholder')} 
                 type="email"
               />
-              <button className="material-symbols-outlined text-[#ffd9df] hover:opacity-85">arrow_forward</button>
+              <button className="material-symbols-outlined text-[#ffd9df] hover:opacity-85 rtl:rotate-180">arrow_forward</button>
             </div>
           </div>
         </div>
         <div className="max-w-[1280px] mx-auto px-6 mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <span className="text-xs text-white/40">© 2026 Claré Laboratoires. All rights reserved.</span>
+          <span className="text-xs text-white/40">{t('foo_rights')}</span>
           <div className="flex gap-8 text-xs text-white/40">
-            <span className="hover:text-[#ffd9df] cursor-pointer transition-colors" onClick={() => navigateTo('/admin')}>Admin Panel</span>
-            <a className="hover:text-white transition-colors" href="#">Privacy Policy</a>
-            <a className="hover:text-white transition-colors" href="#">Terms of Service</a>
-            <a className="hover:text-white transition-colors" href="#">Shipping & Returns</a>
+            <span className="hover:text-[#ffd9df] cursor-pointer transition-colors" onClick={() => navigateTo('/admin')}>{t('foo_admin')}</span>
+            <a className="hover:text-white transition-colors" href="#">{t('foo_privacy')}</a>
+            <a className="hover:text-white transition-colors" href="#">{t('foo_terms')}</a>
+            <a className="hover:text-white transition-colors" href="#">{t('foo_shipping')}</a>
           </div>
         </div>
       </footer>
@@ -1472,11 +1504,11 @@ function App() {
       {isCartOpen && (
         <div className="fixed inset-0 z-50 overflow-hidden">
           <div className="absolute inset-0 bg-[#150004]/40 backdrop-blur-sm transition-opacity" onClick={() => setIsCartOpen(false)} />
-          <div className="absolute inset-y-0 right-0 max-w-full flex pl-10">
+          <div className="absolute inset-y-0 ltr:right-0 rtl:left-0 max-w-full flex ltr:pl-10 rtl:pr-10">
             <div className="w-screen max-w-md bg-white shadow-2xl flex flex-col">
               
-              <div className="px-6 py-6 bg-[#fcf9f8] border-b border-gray-100 flex justify-between items-center">
-                <h3 className="font-serif text-2xl font-semibold text-[#150004]">Your Cart</h3>
+              <div className="px-6 py-6 bg-[#fcf9f8] border-b border-gray-100 flex justify-between items-center ltr:text-left rtl:text-right">
+                <h3 className="font-serif text-2xl font-semibold text-[#150004]">{t('cart_title')}</h3>
                 <button onClick={() => setIsCartOpen(false)} className="text-[#524345] hover:opacity-80">
                   <span className="material-symbols-outlined">close</span>
                 </button>
@@ -1486,11 +1518,11 @@ function App() {
                 {cart.length === 0 ? (
                   <div className="h-64 flex flex-col items-center justify-center text-center">
                     <span className="material-symbols-outlined text-4xl text-gray-300 mb-3">shopping_bag</span>
-                    <p className="text-sm text-[#524345]">Your cart is empty.</p>
+                    <p className="text-sm text-[#524345]">{t('cart_empty')}</p>
                   </div>
                 ) : (
                   cart.map(item => (
-                    <div key={item.id} className="py-6 flex gap-4">
+                    <div key={item.id} className="py-6 flex gap-4 ltr:text-left rtl:text-right">
                       <img className="w-20 h-20 object-contain rounded-lg bg-gray-50 border border-gray-100 p-1 shrink-0" src={item.imageCover} alt={item.name}/>
                       <div className="grow">
                         <h4 className="font-semibold text-[#1c1b1b] text-sm">{item.name}</h4>
@@ -1511,9 +1543,9 @@ function App() {
               </div>
               
               {cart.length > 0 && (
-                <div className="border-t border-gray-100 px-6 py-6 bg-[#fcf9f8]">
+                <div className="border-t border-gray-100 px-6 py-6 bg-[#fcf9f8] ltr:text-left rtl:text-right">
                   <div className="flex justify-between items-center mb-6">
-                    <span className="text-sm text-[#524345]">Subtotal</span>
+                    <span className="text-sm text-[#524345]">{t('cart_subtotal')}</span>
                     <span className="text-lg font-bold text-[#150004]">{cartSubtotal} DZD</span>
                   </div>
                   <button 
@@ -1523,7 +1555,7 @@ function App() {
                     }}
                     className="w-full bg-[#150004] text-white py-4 rounded-full text-xs font-semibold tracking-widest hover:bg-[#3e0b1b] transition-all"
                   >
-                    PROCEED TO CHECKOUT
+                    {t('cart_checkout')}
                   </button>
                 </div>
               )}
@@ -1538,10 +1570,10 @@ function App() {
           <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center">
             <div className="fixed inset-0 bg-[#150004]/40 backdrop-blur-sm transition-opacity" onClick={() => setIsCheckoutOpen(false)} />
             
-            <div className="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+            <div className="inline-block align-bottom bg-white rounded-3xl ltr:text-left rtl:text-right overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
               
-              <div className="px-8 py-6 bg-[#fcf9f8] border-b border-gray-100 flex justify-between items-center">
-                <h3 className="font-serif text-2xl font-semibold text-[#150004]">Complete Your Order</h3>
+              <div className="px-8 py-6 bg-[#fcf9f8] border-b border-gray-100 flex justify-between items-center ltr:text-left rtl:text-right">
+                <h3 className="font-serif text-2xl font-semibold text-[#150004]">{t('form_title')}</h3>
                 <button onClick={() => setIsCheckoutOpen(false)} className="text-[#524345] hover:opacity-80">
                   <span className="material-symbols-outlined">close</span>
                 </button>
@@ -1549,33 +1581,33 @@ function App() {
               
               <form onSubmit={handleCheckoutSubmit} className="p-8 space-y-6">
                 {checkoutError && (
-                  <div className="bg-red-50 text-red-700 p-4 rounded-xl text-xs font-medium border border-red-100">
+                  <div className="bg-red-50 text-red-700 p-4 rounded-xl text-xs font-medium border border-red-100 ltr:text-left rtl:text-right">
                     {checkoutError}
                   </div>
                 )}
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Customer Name */}
-                  <div>
-                    <label className="block text-[11px] font-bold text-[#7c5730] uppercase mb-1 tracking-wider">Full Name</label>
+                  <div className="ltr:text-left rtl:text-right">
+                    <label className="block text-[11px] font-bold text-[#7c5730] uppercase mb-1 tracking-wider">{t('form_name')}</label>
                     <input 
                       required
                       type="text" 
-                      placeholder="Enter your full name"
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#7c5730]/20 focus:border-[#7c5730] text-sm"
+                      placeholder={language === 'ar' ? 'أدخل اسمك الكامل' : (language === 'fr' ? 'Entrez votre nom complet' : 'Enter your full name')}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#7c5730]/20 focus:border-[#7c5730] text-sm ltr:text-left rtl:text-right"
                       value={formData.customerName}
                       onChange={(e) => setFormData({...formData, customerName: e.target.value})}
                     />
                   </div>
                   
                   {/* Phone Number */}
-                  <div>
-                    <label className="block text-[11px] font-bold text-[#7c5730] uppercase mb-1 tracking-wider">Phone Number</label>
+                  <div className="ltr:text-left rtl:text-right">
+                    <label className="block text-[11px] font-bold text-[#7c5730] uppercase mb-1 tracking-wider">{t('form_phone')}</label>
                     <input 
                       required
                       type="tel" 
                       placeholder="e.g. 0555123456"
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#7c5730]/20 focus:border-[#7c5730] text-sm"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#7c5730]/20 focus:border-[#7c5730] text-sm ltr:text-left rtl:text-right"
                       value={formData.phoneNumber}
                       onChange={(e) => setFormData({...formData, phoneNumber: e.target.value})}
                     />
@@ -1584,8 +1616,8 @@ function App() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Wilaya Selection */}
-                  <div className="relative">
-                    <label className="block text-[11px] font-bold text-[#7c5730] uppercase mb-1 tracking-wider">Wilaya</label>
+                  <div className="relative ltr:text-left rtl:text-right">
+                    <label className="block text-[11px] font-bold text-[#7c5730] uppercase mb-1 tracking-wider">{t('form_wilaya')}</label>
                     <button
                       type="button"
                       id="wilaya-select-btn"
@@ -1593,9 +1625,9 @@ function App() {
                         setIsWilayaDropdownOpen(!isWilayaDropdownOpen);
                         setIsCommuneDropdownOpen(false);
                       }}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#7c5730]/20 focus:border-[#7c5730] text-sm bg-white text-left flex justify-between items-center"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#7c5730]/20 focus:border-[#7c5730] text-sm bg-white ltr:text-left rtl:text-right flex justify-between items-center"
                     >
-                      <span>{formData.wilaya ? formData.wilaya : "Select your Wilaya"}</span>
+                      <span>{formData.wilaya ? formData.wilaya : (language === 'ar' ? 'اختر ولايتك' : (language === 'fr' ? 'Sélectionnez votre Wilaya' : 'Select your Wilaya'))}</span>
                       <span className="material-symbols-outlined text-gray-400">arrow_drop_down</span>
                     </button>
                     {isWilayaDropdownOpen && (
@@ -1604,7 +1636,7 @@ function App() {
                           <button
                             key={w.code}
                             type="button"
-                            className="w-full px-4 py-2.5 text-left text-sm hover:bg-[#7c5730]/5 text-gray-700 block transition-colors"
+                            className="w-full px-4 py-2.5 ltr:text-left rtl:text-right text-sm hover:bg-[#7c5730]/5 text-gray-700 block transition-colors"
                             onClick={() => {
                               setFormData({ ...formData, wilaya: w.name, baladia: '' });
                               setIsWilayaDropdownOpen(false);
@@ -1618,8 +1650,8 @@ function App() {
                   </div>
                   
                   {/* Commune / Baladia Selection */}
-                  <div className="relative">
-                    <label className="block text-[11px] font-bold text-[#7c5730] uppercase mb-1 tracking-wider">Commune</label>
+                  <div className="relative ltr:text-left rtl:text-right">
+                    <label className="block text-[11px] font-bold text-[#7c5730] uppercase mb-1 tracking-wider">{t('form_baladia')}</label>
                     <button
                       type="button"
                       id="commune-select-btn"
@@ -1628,9 +1660,9 @@ function App() {
                         setIsCommuneDropdownOpen(!isCommuneDropdownOpen);
                         setIsWilayaDropdownOpen(false);
                       }}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#7c5730]/20 focus:border-[#7c5730] text-sm bg-white text-left flex justify-between items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#7c5730]/20 focus:border-[#7c5730] text-sm bg-white ltr:text-left rtl:text-right flex justify-between items-center disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <span>{formData.baladia ? formData.baladia : (formData.wilaya ? "Select your Commune" : "Please select a Wilaya first")}</span>
+                      <span>{formData.baladia ? formData.baladia : (formData.wilaya ? (language === 'ar' ? 'اختر بلديتك' : (language === 'fr' ? 'Sélectionnez votre Commune' : 'Select your Commune')) : (language === 'ar' ? 'يرجى اختيار الولاية أولاً' : (language === 'fr' ? 'Veuillez sélectionner une Wilaya d\'abord' : 'Please select a Wilaya first')))}</span>
                       <span className="material-symbols-outlined text-gray-400">arrow_drop_down</span>
                     </button>
                     {isCommuneDropdownOpen && formData.wilaya && (
@@ -1639,7 +1671,7 @@ function App() {
                           <button
                             key={c}
                             type="button"
-                            className="w-full px-4 py-2.5 text-left text-sm hover:bg-[#7c5730]/5 text-gray-700 block transition-colors"
+                            className="w-full px-4 py-2.5 ltr:text-left rtl:text-right text-sm hover:bg-[#7c5730]/5 text-gray-700 block transition-colors"
                             onClick={() => {
                               setFormData({ ...formData, baladia: c });
                               setIsCommuneDropdownOpen(false);
@@ -1654,13 +1686,13 @@ function App() {
                 </div>
 
                 {/* Home Address */}
-                <div>
-                  <label className="block text-[11px] font-bold text-[#7c5730] uppercase mb-1 tracking-wider">Delivery Address</label>
+                <div className="ltr:text-left rtl:text-right">
+                  <label className="block text-[11px] font-bold text-[#7c5730] uppercase mb-1 tracking-wider">{t('form_address')}</label>
                   <input 
                     required
                     type="text" 
-                    placeholder="Enter street address, house/apartment number"
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#7c5730]/20 focus:border-[#7c5730] text-sm"
+                    placeholder={language === 'ar' ? 'أدخل اسم الشارع، رقم الشقة/المنزل' : (language === 'fr' ? 'Entrez l\'adresse complète (rue, maison/appartement)' : 'Enter street address, house/apartment number')}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#7c5730]/20 focus:border-[#7c5730] text-sm ltr:text-left rtl:text-right"
                     value={formData.homeAddress}
                     onChange={(e) => setFormData({...formData, homeAddress: e.target.value})}
                   />
@@ -1668,8 +1700,8 @@ function App() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Shipping Method */}
-                  <div>
-                    <label className="block text-[11px] font-bold text-[#7c5730] uppercase mb-1 tracking-wider">Shipping Method</label>
+                  <div className="ltr:text-left rtl:text-right">
+                    <label className="block text-[11px] font-bold text-[#7c5730] uppercase mb-1 tracking-wider">{t('form_shipping')}</label>
                     <div className="grid grid-cols-2 gap-2 mt-1">
                       <button 
                         type="button"
@@ -1677,7 +1709,7 @@ function App() {
                         className={`py-3 px-4 rounded-xl border text-xs font-semibold flex flex-col items-center gap-1 justify-center transition-all ${formData.shippingMethod === 'home' ? 'border-[#7c5730] bg-[#7c5730]/5 text-[#7c5730]' : 'border-gray-200 text-[#524345]'}`}
                       >
                         <span className="material-symbols-outlined text-lg">home</span>
-                        Home Delivery
+                        {t('form_home')}
                       </button>
                       <button 
                         type="button"
@@ -1685,14 +1717,14 @@ function App() {
                         className={`py-3 px-4 rounded-xl border text-xs font-semibold flex flex-col items-center gap-1 justify-center transition-all ${formData.shippingMethod === 'stopdesk' ? 'border-[#7c5730] bg-[#7c5730]/5 text-[#7c5730]' : 'border-gray-200 text-[#524345]'}`}
                       >
                         <span className="material-symbols-outlined text-lg">storefront</span>
-                        Office Stopdesk
+                        {t('form_desk')}
                       </button>
                     </div>
                   </div>
 
                   {/* Payment Method */}
-                  <div>
-                    <label className="block text-[11px] font-bold text-[#7c5730] uppercase mb-1 tracking-wider">Payment Method</label>
+                  <div className="ltr:text-left rtl:text-right">
+                    <label className="block text-[11px] font-bold text-[#7c5730] uppercase mb-1 tracking-wider">{t('form_payment')}</label>
                     <div className="grid grid-cols-3 gap-2 mt-1">
                       <button 
                         type="button"
@@ -1700,7 +1732,7 @@ function App() {
                         className={`py-3 px-2 rounded-xl border text-[10px] font-semibold flex flex-col items-center gap-1 justify-center transition-all ${formData.paymentMethod === 'cash' ? 'border-[#7c5730] bg-[#7c5730]/5 text-[#7c5730]' : 'border-gray-200 text-[#524345]'}`}
                       >
                         <span className="material-symbols-outlined text-lg">payments</span>
-                        COD (Cash)
+                        {language === 'ar' ? 'الدفع عند الاستلام' : (language === 'fr' ? 'Paiement Liv.' : 'COD')}
                       </button>
                       <button 
                         type="button"
@@ -1708,7 +1740,7 @@ function App() {
                         className={`py-3 px-2 rounded-xl border text-[10px] font-semibold flex flex-col items-center gap-1 justify-center transition-all ${formData.paymentMethod === 'dahabia' ? 'border-[#7c5730] bg-[#7c5730]/5 text-[#7c5730]' : 'border-gray-200 text-[#524345]'}`}
                       >
                         <span className="material-symbols-outlined text-lg">credit_card</span>
-                        Dahabia
+                        {language === 'ar' ? 'الذهبية' : 'Dahabia'}
                       </button>
                       <button 
                         type="button"
@@ -1716,7 +1748,7 @@ function App() {
                         className={`py-3 px-2 rounded-xl border text-[10px] font-semibold flex flex-col items-center gap-1 justify-center transition-all ${formData.paymentMethod === 'cib' ? 'border-[#7c5730] bg-[#7c5730]/5 text-[#7c5730]' : 'border-gray-200 text-[#524345]'}`}
                       >
                         <span className="material-symbols-outlined text-lg">credit_card</span>
-                        CIB Card
+                        {language === 'ar' ? 'CIB' : 'CIB Card'}
                       </button>
                     </div>
                   </div>
@@ -1732,19 +1764,19 @@ function App() {
                 />
 
                 {/* Promo Code */}
-                <div>
-                  <label className="block text-[11px] font-bold text-[#7c5730] uppercase mb-1 tracking-wider">Promo Code (Optional)</label>
+                <div className="ltr:text-left rtl:text-right">
+                  <label className="block text-[11px] font-bold text-[#7c5730] uppercase mb-1 tracking-wider">{language === 'ar' ? 'رمز الترويجي (اختياري)' : (language === 'fr' ? 'Code Promo (Optionnel)' : 'Promo Code (Optional)')}</label>
                   <input 
                     type="text" 
-                    placeholder="Enter discount coupon code"
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#7c5730]/20 focus:border-[#7c5730] text-sm"
+                    placeholder={language === 'ar' ? 'أدخل رمز الكوبون' : (language === 'fr' ? 'Entrez le code de réduction' : 'Enter discount coupon code')}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#7c5730]/20 focus:border-[#7c5730] text-sm ltr:text-left rtl:text-right"
                     value={formData.promoCode}
                     onChange={(e) => setFormData({...formData, promoCode: e.target.value})}
                   />
                 </div>
 
                 {/* Robot Verification */}
-                <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl border border-gray-150">
+                <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl border border-gray-150 ltr:text-left rtl:text-right">
                   <input 
                     required
                     type="checkbox" 
@@ -1754,22 +1786,22 @@ function App() {
                     onChange={(e) => setFormData({...formData, robotVerified: e.target.checked})}
                   />
                   <label htmlFor="robotVerified" className="text-xs font-semibold text-[#524345] cursor-pointer">
-                    I confirm that I am placing a real order and am not a automated robot.
+                    {t('form_robot')}
                   </label>
                 </div>
 
                 {/* Pricing Summary */}
-                <div className="bg-[#fcf9f8] p-6 rounded-2xl border border-gray-100 space-y-3">
+                <div className="bg-[#fcf9f8] p-6 rounded-2xl border border-gray-100 space-y-3 ltr:text-left rtl:text-right">
                   <div className="flex justify-between text-sm text-[#524345]">
-                    <span>Cart Subtotal</span>
+                    <span>{t('cart_subtotal')}</span>
                     <span>{cartSubtotal} DZD</span>
                   </div>
                   <div className="flex justify-between text-sm text-[#524345] items-center">
-                    <span>Delivery Fee ({formData.shippingMethod === 'home' ? 'Home' : 'Stopdesk'})</span>
-                    <span>{loadingShipping ? 'Calculating...' : `${shippingFee} DZD`}</span>
+                    <span>{language === 'ar' ? 'رسوم التوصيل' : (language === 'fr' ? 'Frais de livraison' : 'Delivery Fee')} ({formData.shippingMethod === 'home' ? t('form_home') : t('form_desk')})</span>
+                    <span>{loadingShipping ? (language === 'ar' ? 'جاري الحساب...' : 'Calculating...') : `${shippingFee} DZD`}</span>
                   </div>
                   <div className="flex justify-between text-base font-bold text-[#150004] pt-3 border-t border-gray-200">
-                    <span>Total Amount</span>
+                    <span>{language === 'ar' ? 'المبلغ الإجمالي' : (language === 'fr' ? 'Montant Total' : 'Total Amount')}</span>
                     <span>{orderTotal} DZD</span>
                   </div>
                 </div>
@@ -1780,7 +1812,7 @@ function App() {
                   disabled={submittingOrder}
                   className="w-full bg-[#150004] text-white py-4 rounded-full text-xs font-semibold tracking-widest hover:bg-[#3e0b1b] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
-                  {submittingOrder ? 'SUBMITTING ORDER...' : `CONFIRM ORDER — ${orderTotal} DZD`}
+                  {submittingOrder ? t('form_submitting') : (language === 'ar' ? `تأكيد الطلب — ${orderTotal} د.ج` : (language === 'fr' ? `VALIDER LA COMMANDE — ${orderTotal} DZD` : `SUBMIT ORDER — ${orderTotal} DZD`))}
                 </button>
               </form>
             </div>
