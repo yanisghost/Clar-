@@ -1074,7 +1074,7 @@ function App() {
               </button>
               <a 
                 href="#science"
-                className="border border-[#7c5730] text-[#7c5730] px-10 py-5 rounded-full text-xs font-semibold tracking-widest text-center hover:bg-[#7c5730]/5 transition-all"
+                className="border border-[#7c5730] text-[#7c5730] bg-white/70 backdrop-blur-sm px-10 py-5 rounded-full text-xs font-semibold tracking-widest text-center hover:bg-[#7c5730]/10 hover:border-[#150004] hover:text-[#150004] transition-all shadow-sm"
               >
                 {t('hero_btn_learn')}
               </a>
