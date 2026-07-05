@@ -50,6 +50,12 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDetailsTab, setActiveDetailsTab] = useState(null);
 
+  // --- ADMIN WORKSPACE STATE ---
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const [adminToken, setAdminToken] = useState(localStorage.getItem('adminToken') || null);
+  const [adminUser, setAdminUser] = useState(JSON.parse(localStorage.getItem('adminUser')) || null);
+  const [adminTab, setAdminTab] = useState('orders'); // orders, stats
+
   // --- INTERNATIONALIZATION (i18n) STATE ---
   const [language, setLanguage] = useState(localStorage.getItem('lang') || 'en');
 
@@ -65,12 +71,6 @@ function App() {
     document.body.dir = language === 'ar' ? 'rtl' : 'ltr';
     localStorage.setItem('lang', language);
   }, [language, currentPath]);
-
-  // --- ADMIN WORKSPACE STATE ---
-  const [currentPath, setCurrentPath] = useState(window.location.pathname);
-  const [adminToken, setAdminToken] = useState(localStorage.getItem('adminToken') || null);
-  const [adminUser, setAdminUser] = useState(JSON.parse(localStorage.getItem('adminUser')) || null);
-  const [adminTab, setAdminTab] = useState('orders'); // orders, stats
   
   const [adminEmail, setAdminEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
