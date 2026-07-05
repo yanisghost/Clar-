@@ -1263,10 +1263,10 @@ function App() {
                 </div>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 w-full">
                 <button 
                   onClick={addToCart}
-                  className="bg-[#150004] text-white px-10 py-4.5 rounded-full text-xs font-semibold tracking-widest hover:bg-[#3e0b1b] transition-all flex items-center justify-center gap-3 shadow-md"
+                  className="bg-[#150004] text-white px-12 py-5 rounded-full text-sm font-bold tracking-widest hover:bg-[#3e0b1b] transition-all flex items-center justify-center gap-3 shadow-md w-full sm:w-auto"
                 >
                   ADD TO CART
                   <span className="material-symbols-outlined text-sm">shopping_bag</span>
@@ -1276,7 +1276,7 @@ function App() {
                     if (cart.length === 0) addToCart();
                     setIsCheckoutOpen(true);
                   }}
-                  className="border border-[#150004] text-[#150004] px-10 py-4.5 rounded-full text-xs font-semibold tracking-widest hover:bg-[#150004]/5 transition-all"
+                  className="border border-[#150004] text-[#150004] px-12 py-5 rounded-full text-sm font-bold tracking-widest hover:bg-[#150004]/5 transition-all w-full sm:w-auto"
                 >
                   BUY NOW
                 </button>
