@@ -1287,8 +1287,8 @@ function App() {
               src="/skin_split.png"
               draggable="false"
             />
-            <div className="absolute bottom-6 ltr:left-6 rtl:right-6 glass px-4 py-2 rounded-xl text-[10px] font-bold text-[#1c1b1b] tracking-widest">{t('vis_left')}</div>
-            <div className="absolute bottom-6 ltr:right-6 rtl:left-6 glass px-4 py-2 rounded-xl text-[10px] font-bold text-[#1c1b1b] tracking-widest">{t('vis_right')}</div>
+            <div className="absolute bottom-6 left-6 glass px-4 py-2 rounded-xl text-[10px] font-bold text-[#1c1b1b] tracking-widest">{t('vis_left')}</div>
+            <div className="absolute bottom-6 right-6 glass px-4 py-2 rounded-xl text-[10px] font-bold text-[#1c1b1b] tracking-widest">{t('vis_right')}</div>
           </div>
         </div>
       </section>
