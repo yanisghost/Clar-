@@ -418,7 +418,7 @@ function App() {
       return (
         <div className="min-h-screen bg-[#fcf9f8] flex items-center justify-center px-4 font-sans antialiased">
           <div className="max-w-md w-full bg-white rounded-3xl shadow-soft border border-white/50 p-10 text-center">
-            <img src="/Logo.png" alt="Claré Logo" className="h-10 mx-auto mb-2 cursor-pointer object-contain" onClick={() => navigateTo('/')} />
+            <img src="/Logo.png" alt="Claré Logo" className="h-16 mx-auto mb-3 cursor-pointer object-contain" onClick={() => navigateTo('/')} />
             <span className="text-xs font-bold text-[#7c5730] tracking-widest block mb-8 uppercase">ADMIN WORKSPACE</span>
             
             <form onSubmit={handleAdminLogin} className="space-y-6 text-left">
@@ -473,7 +473,7 @@ function App() {
         {/* SIDEBAR PANEL */}
         <aside className="w-64 bg-[#150004] text-white shrink-0 flex flex-col p-6 shadow-xl">
           <div className="border-b border-white/5 pb-6 mb-8">
-            <img src="/Logo.png" alt="Claré Logo" className="h-10 object-contain brightness-0 invert mb-1" />
+            <img src="/Logo.png" alt="Claré Logo" className="h-14 object-contain brightness-0 invert mb-2" />
             <span className="text-[10px] font-bold text-[#ffd9df]/55 tracking-widest block uppercase">DASHBOARD WORKSPACE</span>
           </div>
 
@@ -861,7 +861,7 @@ function App() {
       {/* ─── NAVBAR ─── */}
       <nav className="fixed top-0 w-full z-40 bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-sm">
         <div className="max-w-[1280px] mx-auto px-6 py-4 flex justify-between items-center">
-          <img src="/Logo.png" alt="Claré Logo" className="h-10 w-auto cursor-pointer object-contain" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} />
+          <img src="/Logo.png" alt="Claré Logo" className="h-16 w-auto cursor-pointer object-contain" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} />
           <div className="hidden md:flex items-center gap-8">
             <a 
               className={`pb-1 transition-all text-xs uppercase tracking-widest ${activeSection === 'science' ? 'text-[#150004] font-bold border-b-2 border-[#150004]' : 'text-[#524345] hover:text-[#150004]'}`} 
@@ -1370,7 +1370,7 @@ function App() {
         <div className="max-w-[1280px] mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <img src="/Logo.png" alt="Claré Logo" className="h-8 w-auto object-contain brightness-0 invert" />
+              <img src="/Logo.png" alt="Claré Logo" className="h-12 w-auto object-contain brightness-0 invert" />
               <span className="font-serif text-xl text-[#ffd9df] font-semibold">Laboratoires</span>
             </div>
             <p className="text-white/60 text-sm max-w-sm mb-10 leading-relaxed">Pioneering the intersection of clean clinical research and premium botanical hydration. Paris, France.</p>
