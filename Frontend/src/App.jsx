@@ -10,8 +10,8 @@ function App() {
   const [product, setProduct] = useState({
     id: '6a48eca24d4bcefe83f32d23', // Default seeded ID
     name: 'Claré Hydrating Sun Mist',
-    price: 4800,
-    discountPrice: 3900,
+    price: 2500,
+    discountPrice: 1900,
     imageCover: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCMPzQqmwbkW2Jm-WSMQykVINs1L2aQNtNyRt2GBv9SJ3L0iIqcgcBa0fQU3YP3xcEQrsz9nXjyZsnwPkCck0uVzIL4U4guKZ0pGWSN_llq67yveprqUMlrojBCr-W7akjQ_gj5G6xHuvAKumvWvOWL4n--5c56OUUV1a1Ndvr-zqgf1QnS8Fs4uOt0PFz6lVz5F_dELtb82KmQ6I7HQusvY7EppViSHph7SX7G8sxNbtHrdyBlay-BVMXT9zlDysP-5Io',
     description: 'The ultimate fusion of clinical protection and sensorial elegance. A single mist provides all-day defense and luminous hydration.'
   });
